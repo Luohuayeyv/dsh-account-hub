@@ -1,0 +1,4 @@
+# dsh-account-hub bundle patch: adds the site account hub (Settings page + agent tools).
+- insert:
+    - id: account-hub
+      name: 'dsh-account-hub'
