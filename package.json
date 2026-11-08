@@ -1,0 +1,49 @@
+{
+  "name": "dsh-account-hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Site account manager for DeepSeek Harness: encrypted site accounts (URL + username + password) with a Settings page, plus Edge-based authenticated search/fetch tools for agents, including a human-verification handoff in a visible browser window.",
+  "license": "MIT",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "account-manager",
+    "browser-automation",
+    "cdp",
+    "human-verification"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "node --check index.js && node --check client.js && node --check lib/store.js && node --check lib/accountService.js && node --check lib/routes.js && node --check lib/tools.js && node --check lib/cdp.js && node --check lib/browser.js && node --check lib/extract.js",
+    "test": "node dev/test-service.mjs",
+    "test:browser": "node dev/test-browser.mjs",
+    "test:integration": "node dev/test-integration.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}
