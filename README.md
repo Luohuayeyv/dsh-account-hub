@@ -10,18 +10,27 @@ A DeepSeek Harness plugin that manages site accounts (URL + username + password)
 
 > 📖 **完整中文使用说明与注意事项：[docs/使用说明.md](docs/使用说明.md)**（设置页内也提供「中文使用说明与注意事项」可折叠卡片）
 
-## 安装
+## 安装（DeepSeek Harness）
 
-1. 克隆本仓库：
-   ```powershell
-   git clone https://github.com/Luohuayeyv/dsh-account-hub.git
-   ```
-2. 在 DeepSeek Harness 中安装为本地 bundle（二选一）：
-   - 对 Agent 说：**「安装本地插件，目录是 `<克隆目录的绝对路径>`」**（底层是 `plugin_manager` → `install_bundle`，target 为该绝对路径）；
-   - 或使用设置里的插件管理界面安装本地插件目录。
-3. 安装完成后刷新 Harness 页面，左下角 **设置 → 账号管理** 即会出现。
+在 DSH 的插件安装入口（设置 → 插件 → 安装；不同版本位置略有差异）填入以下任意一种；也可以直接对 Agent 说「安装插件 xxx」（底层是 `plugin_manager` → `install_bundle`，target 填下面的值）：
 
-卸载：`plugin_manager` → `remove_bundle`，target `dsh-account-hub`。数据目录 `%USERPROFILE%\.dsh\account-hub\` 可手动删除。
+**方式一：GitHub 源（推荐，需本机安装 git）**
+```text
+github:Luohuayeyv/dsh-account-hub#v0.1.0
+```
+
+**方式二：本机包（无需 git）**
+从 [Releases v0.1.0](https://github.com/Luohuayeyv/dsh-account-hub/releases/tag/v0.1.0) 下载 `dsh-account-hub-0.1.0.tgz`，把该文件的**绝对路径**填入安装入口（例如 `C:\Users\你\Downloads\dsh-account-hub-0.1.0.tgz`）。
+
+**方式三：本地克隆目录**
+```powershell
+git clone https://github.com/Luohuayeyv/dsh-account-hub.git
+```
+把克隆目录的**绝对路径**填入安装入口。
+
+安装完成后刷新 Harness 页面，左下角 **设置 → 账号管理** 即会出现。
+
+卸载：`plugin_manager` → `remove_bundle`，target 填 `dsh-account-hub`。数据目录 `%USERPROFILE%\.dsh\account-hub\` 可手动删除。
 
 ## 使用方式
 
