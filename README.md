@@ -8,6 +8,8 @@ A DeepSeek Harness plugin that manages site accounts (URL + username + password)
 - 浏览器：本机 Microsoft Edge（也支持 Chrome，路径可通过插件配置 `browserPath` 指定）。
 - 零 npm 依赖：Host 侧只用 Node 内置模块，直接通过 Chrome DevTools Protocol 驱动浏览器。
 
+> 📖 **完整中文使用说明与注意事项：[docs/使用说明.md](docs/使用说明.md)**（设置页内也提供「中文使用说明与注意事项」可折叠卡片）
+
 ## 安装
 
 1. 克隆本仓库：
@@ -51,12 +53,26 @@ A DeepSeek Harness plugin that manages site accounts (URL + username + password)
 - HTTP 接口仅监听本机（Harness Web 服务，如 `127.0.0.1:50461`），按本机单用户模型设计；账号数据与密钥均在同一用户目录下。
 - 请确认目标网站服务条款允许自动化访问，仅用于你有权访问的内容。
 
+## 中文使用说明与注意事项
+
+完整文档见 **[docs/使用说明.md](docs/使用说明.md)**，要点：
+
+- **不会自动破解验证码**：验证码 / 人机验证 / 二次验证 / passkey 必须由真人完成（有意设计）。
+- **第三方登录需要网络可达**：`Continue with Google` 等要求浏览器能访问 accounts.google.com；打不开时改用网站密码 / passkey，或把登录方式切换为「手动登录」。
+- **自动填表有边界**：只覆盖常见标准登录表单；多步登录、iframe / Shadow DOM、passkey-only 账号请在弹窗中手动完成。
+- **会话会过期**：登录会话保存在本机浏览器 profile 中（持久 cookie 约 7 天）；过期后重新点一次登录。
+- **修改密码要同步**：站点密码修改后请在账号「编辑」里更新；「手动登录」不依赖保存的密码。
+- **网络与代理**：插件使用本机系统网络，代理/VPN 需对 Edge 生效，否则可能连接超时。
+- **数据备份**：`accounts.json` 与 `secret.key` 必须一起备份；删除账号会同时删除其浏览器 profile（含 cookie）。
+- **合规使用**：请遵守目标网站服务条款与版权规定，仅访问你有权访问的内容。
+
 ## 限制
 
 - 自动填表覆盖常见登录表单；多步登录、iframe / Shadow DOM 登录框、passkey-only 账号需在弹窗中手动完成（插件会保持窗口并等待你确认）。推荐把这类账号的 **登录方式** 设为「手动登录」。
 - 部分站点会检测无头浏览器；抓取失败时可为该账号勾选「搜索时显示浏览器窗口」重试。
 - 登录会话保存在本机 Edge profile 中，站点 Session 过期后重新点「登录并验证」。
 - 同一账号的浏览器操作串行执行（同一 profile 不能被两个浏览器同时打开）。
+- 本地 HTTP 接口按本机单用户模型设计，请勿把 Harness 本地端口暴露到公网。
 
 ## 开发与测试
 
@@ -80,6 +96,7 @@ lib/cdp.js              零依赖 CDP 客户端（本机 Edge/Chrome）
 lib/browser.js          登录 / 会话 / 抓取 / 真人验证交接
 lib/extract.js          页面正文提取与验证码检测
 docs/DESIGN.md          架构与接口设计
+docs/使用说明.md         中文使用说明与注意事项（完整版）
 dev/                    测试与本地夹具站点（不参与运行时）
 ```
 
