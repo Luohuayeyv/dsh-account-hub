@@ -666,6 +666,7 @@ window.__ModuleLoader__.load({
       const browser = data !== null ? data.browser : null
 
       const [addOpen, setAddOpen] = React.useState(false)
+      const [helpOpen, setHelpOpen] = React.useState(false)
       const [addForm, setAddForm] = React.useState(emptyForm)
       const [editingId, setEditingId] = React.useState(null)
       const [editForm, setEditForm] = React.useState(emptyForm)
@@ -890,6 +891,50 @@ window.__ModuleLoader__.load({
           '账号仅加密保存在本机；子智能体可通过工具使用已保存的登录会话搜索资料；登录方式可选自动填表或手动登录（Google / 通行密钥等），遇到验证码时会打开可见的浏览器窗口，请你亲手完成。'),
         h('p', { className: 'ah_intro' }, '请自行确认目标网站的服务条款允许自动化访问。'))
 
+      // ----- 中文使用说明与注意事项（可折叠） -----
+      const helpTools = [
+        ['account_hub_list', '列出已保存账号与登录状态（不含密码）'],
+        ['account_hub_search', '用指定账号的登录会话在站内搜索'],
+        ['account_hub_fetch', '用登录会话打开任意网址并读取正文/链接'],
+        ['account_hub_login', '打开可见窗口，请你手动完成登录或验证'],
+      ]
+      const helpCard = h('section', { className: 'ah_card ah_help' },
+        h('div', { className: 'ah_cardHead' },
+          h('div', null,
+            h('h3', { className: 'ah_cardTitle' }, '中文使用说明与注意事项'),
+            h('p', { className: 'ah_cardNote' }, '三步上手：① 添加账号（网址 + 账号 + 密码，选择登录方式）；② 点「登录并验证 / 打开登录窗口」完成一次登录；③ 子智能体即可通过工具使用该登录会话搜索或阅读资料。')),
+          h('button', {
+            type: 'button',
+            className: 'ah_btn',
+            onClick: () => setHelpOpen((open) => !open),
+          }, helpOpen ? '收起说明' : '展开说明')),
+        helpOpen
+          ? h('div', { className: 'ah_helpBody' },
+            h('div', { className: 'ah_helpBlock' },
+              h('p', { className: 'ah_helpTitle' }, '登录方式'),
+              h('p', { className: 'ah_helpLine' }, '自动填表：插件自动填写保存的账号密码并提交，适合普通密码登录的网站。'),
+              h('p', { className: 'ah_helpLine' }, '手动登录：插件只打开可见登录窗口、不自动填表；适合 Google / Apple / 通行密钥（passkey）/ 验证码 / 二次验证等场景。完成后点「我已完成验证」。')),
+            h('div', { className: 'ah_helpBlock' },
+              h('p', { className: 'ah_helpTitle' }, '子智能体可用的工具'),
+              h('ul', { className: 'ah_helpList' }, helpTools.map((pair) => h('li', { key: pair[0], className: 'ah_helpItem' },
+                h('span', { className: 'ah_mono' }, pair[0]), ' — ', pair[1])))),
+            h('div', { className: 'ah_helpBlock' },
+              h('p', { className: 'ah_helpTitle' }, '注意事项（重要）'),
+              h('ul', { className: 'ah_helpList' },
+                h('li', { className: 'ah_helpItem' }, '插件不会自动破解验证码 / 人机验证 / 二次验证；这些必须由你亲手完成，这是有意的安全设计。'),
+                h('li', { className: 'ah_helpItem' }, '第三方登录（如 Continue with Google）需要浏览器能访问对应第三方站点；打不开时请改用网站密码或通行密钥，或把登录方式切换为「手动登录」。'),
+                h('li', { className: 'ah_helpItem' }, '自动填表只覆盖常见标准登录表单；多步登录、iframe / Shadow DOM 登录框、passkey-only 账号请在弹窗中手动完成。'),
+                h('li', { className: 'ah_helpItem' }, '部分网站会检测无头浏览器；抓取失败时，在该账号「编辑」里勾选「搜索时显示浏览器窗口」后重试。'),
+                h('li', { className: 'ah_helpItem' }, '登录会话保存在本机独立浏览器 profile 中（持久 cookie 约 7 天）；站点会话过期后需重新点一次登录。'),
+                h('li', { className: 'ah_helpItem' }, '同一账号的浏览器操作串行执行；删除账号会同时删除其浏览器 profile（含登录 cookie）。'),
+                h('li', { className: 'ah_helpItem' }, '修改站点密码后，请在账号「编辑」里同步更新密码；「手动登录」不依赖保存的密码。'),
+                h('li', { className: 'ah_helpItem' }, '账号与密钥仅保存在本机（AES-256-GCM 加密），任何界面、接口、日志都不会返回明文密码。'),
+                h('li', { className: 'ah_helpItem' }, '本地 HTTP 接口按单用户模型设计，请勿把 Harness 的本地端口暴露到公网。'),
+                h('li', { className: 'ah_helpItem' }, '请遵守目标网站的服务条款与版权规定，仅用于你有权访问的内容。')),
+            h('p', { className: 'ah_helpLine ah_helpFoot' }, '完整中文说明见插件仓库 docs/使用说明.md（GitHub: Luohuayeyv/dsh-account-hub）。'))
+          )
+          : null)
+
       const browserNotice = browser !== null && browser.available === false
         ? h('div', { className: 'ah_notice ah_notice--warn', role: 'status' },
           '未找到可用的浏览器' + (browser.error.length > 0 ? '：' + browser.error : '') +
@@ -1083,6 +1128,7 @@ window.__ModuleLoader__.load({
       return h('div', { className: 'ah_page', 'data-plugin': 'dsh-account-hub' },
         h('style', { key: 'ah-styles' }, CSS),
         intro,
+        helpCard,
         browserNotice,
         pollNotice,
         pendingCard,
@@ -1321,6 +1367,14 @@ window.__ModuleLoader__.load({
 .ah_verActions{display:flex;flex-wrap:wrap;gap:8px;flex:none}
 .ah_verHint{margin:0;font-size:11.5px;line-height:1.55;color:var(--dsw-alias-label-secondary);overflow-wrap:anywhere}
 .ah_verError{margin:0;font-size:11.5px;line-height:1.55;color:var(--dsw-alias-state-error-primary);overflow-wrap:anywhere}
+.ah_help{padding-bottom:12px}
+.ah_helpBody{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.ah_helpBlock{display:flex;flex-direction:column;gap:4px}
+.ah_helpTitle{margin:0;font-size:12px;font-weight:600;line-height:1.5;color:var(--dsw-alias-label-primary)}
+.ah_helpLine{margin:0;font-size:11.5px;line-height:1.6;color:var(--dsw-alias-label-secondary);overflow-wrap:anywhere}
+.ah_helpList{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.ah_helpItem{font-size:11.5px;line-height:1.6;color:var(--dsw-alias-label-secondary);overflow-wrap:anywhere}
+.ah_helpFoot{margin-top:2px}
 @media (max-width:640px){
   .ah_form{grid-template-columns:minmax(0,1fr)}
   .ah_meta{grid-template-columns:minmax(0,1fr)}
