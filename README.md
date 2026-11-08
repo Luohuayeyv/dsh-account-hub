@@ -12,21 +12,16 @@ A DeepSeek Harness plugin that manages site accounts (URL + username + password)
 
 ## 安装（DeepSeek Harness）
 
-在 DSH 的插件安装入口（设置 → 插件 → 安装；不同版本位置略有差异）填入以下任意一种；也可以直接对 Agent 说「安装插件 xxx」（底层是 `plugin_manager` → `install_bundle`，target 填下面的值）：
+DSH 里打开 **插件 → 添加插件**，弹窗提示「输入插件的包名、GitHub 仓库地址或本地目录路径」，把下面任意一种填进去：
 
-**方式一：GitHub 源（推荐，需本机安装 git）**
-```text
-github:Luohuayeyv/dsh-account-hub#v0.1.0
-```
+| 方式 | 填写内容 | 说明 |
+|---|---|---|
+| **GitHub 仓库地址（推荐）** | `https://github.com/Luohuayeyv/dsh-account-hub` | 需要本机已安装 git（DSH 会先用 `git ls-remote` 检查仓库） |
+| **GitHub 源（固定版本，需 git）** | `github:Luohuayeyv/dsh-account-hub#v0.1.0` | 固定到 v0.1.0 |
+| **本地 tgz（无需 git）** | `dsh-account-hub-0.1.0.tgz` 的**绝对路径** | 从 [Releases v0.1.0](https://github.com/Luohuayeyv/dsh-account-hub/releases/tag/v0.1.0) 下载 |
+| **本地克隆目录** | 克隆目录的**绝对路径** | `git clone https://github.com/Luohuayeyv/dsh-account-hub.git` 后使用 |
 
-**方式二：本机包（无需 git）**
-从 [Releases v0.1.0](https://github.com/Luohuayeyv/dsh-account-hub/releases/tag/v0.1.0) 下载 `dsh-account-hub-0.1.0.tgz`，把该文件的**绝对路径**填入安装入口（例如 `C:\Users\你\Downloads\dsh-account-hub-0.1.0.tgz`）。
-
-**方式三：本地克隆目录**
-```powershell
-git clone https://github.com/Luohuayeyv/dsh-account-hub.git
-```
-把克隆目录的**绝对路径**填入安装入口。
+> 注意：不要只填 `dsh-account-hub` 或 `dsh-account-hub.git` 这类片段（本插件未发布到 npm，且 `.git` 后缀不是仓库地址）；请填**完整的 GitHub 地址**、**完整的本地绝对路径**或上表中的 spec。
 
 安装完成后刷新 Harness 页面，左下角 **设置 → 账号管理** 即会出现。
 
