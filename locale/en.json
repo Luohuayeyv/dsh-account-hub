@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Site account hub",
+    "description": "Manage saved site accounts (URL, username, password) and let agents search or read authenticated pages through the saved session. When a site asks for human verification, a visible browser window opens so you can complete it yourself."
+  }
+}
